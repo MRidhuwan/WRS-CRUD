@@ -14,38 +14,46 @@
       </div> <!-- /.page-header -->
       <div class="panel panel-default">
         <div class="panel-body">
-        <table class="table">
-  <thead>
+
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tbody>
+           <?php 
+              include 'koneksi.php';
+                $no = 1;
+                  $query = mysqli_query($connection, 
+                  "SELECT SUM(CASE WHEN jenis_kelamin = 'laki-laki' THEN 1 ELSE 0 END) L
+                        , SUM(CASE WHEN jenis_kelamin = 'perempuan' THEN 1 ELSE 0 END) P 
+                        , COUNT(*) AS total
+                        , SUM(CASE WHEN status_kunjungan = 'baru' THEN 1 ELSE 0 END) B
+                        , SUM(CASE WHEN status_kunjungan = 'lama' THEN 1 ELSE 0 END) L
+                   FROM tb_ridhuwan" ) or die (mysqli_error($connection));
+                    
+            while($row = mysqli_fetch_assoc($query)){   
+            ?>
+
     <tr>
-      <th colspan="2">Total Pasien RS</th>
-      <th colspan="2" class="text-center">Data Pasien</th>
-      <th colspan="2" class="text-center">Kunjungan</th>
-    </tr>
-   
-    <tr>
-      <th colspan="1">Data Total Pasien</th>
-      <th colspan="2">Laki-Laki</th>
-      <th colspan="2">Perempuan</th>
+      
+      <th scope="col">Data Pasien</th>
+      <th colspan="3" style="text-align:center;">Jumlah Pasien</th>
+      <th colspan="4" style="text-align:center;">Jumlah Kunjungan</th>
     </tr>
 
+    <tr>
+      <th colspan="2"></th>
+      <th>Jumlah Pasien <?= " Laki-Laki adalah "  . $row['L'] . ' pasien' ?></th>
+      <th>Jumlah Pasien <?= " Perempuan adalah "  . $row['P'] . ' pasien' ?></th>
+      <th>Jumlah Kunjungan <?= " Yang Baru adalah "  . $row['B'] . ' Kunjungan' ?></th>
+      <th>Jumlah Kunjungan <?= " Yang Lama adalah "  . $row['L'] . ' Kunjungan' ?></th>
+    </tr>
+  
+    <tr>
+      
+      <th colspan="6" style="text-align:center;">Total Keseluruhan  <?= $row['total'] . ' Pasien' ?></th>
+      
+     </tr>
   </thead>
-  <tbody>
-    <?php 
-        include 'koneksi.php';
-          $no = 1;
-            $query = mysqli_query($connection, "SELECT id_pasien,jenis_kelamin, COUNT(jenis_kelamin) AS jumlah
-            FROM tb_ridhuwan GROUP by jenis_kelamin ") or die (mysqli_error($connection));
-              while($row = mysqli_fetch_array($query)){
-    ?>
-    <tr>
-                      
-      <td colspan="1"><?= $row['jumlah'] . ' Pasien' ?></td>
-      <td colspan="2"><?php echo " Laki-Laki adalah "  . $row['jumlah'] . ' Pasien' ?></td>
-      <td colspan="3"><?php echo " Perempuan adalah "  . $row['jumlah'] . ' Pasien' ?></td>
-    </tr>
-    
     <?php } ?>
-
   </tbody>
 </table>
 
