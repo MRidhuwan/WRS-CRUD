@@ -1,0 +1,8 @@
+# WRS-CRUD
+WRS adalah Program Aplikasi yang meliputi CREATE UPDATE DELETE AND LAPORAN
+- CREATE
+- UPDATE
+- DELETE
+- READ
+- LAPORAN
+- EXPORT TO EXCEL
